@@ -564,6 +564,32 @@
 
             </li>
 
+             <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Digital Marketing Operations - PT. Telkom Indonesia</h4>
+
+              <span>Oct 2023 — Feb 2025 (16 mounts)</span>
+
+              <p class="timeline-text">
+                As a Digital Marketing Operations for the Business Service unit of PT. Telkom Indonesia Witel
+                South Kalimantan
+              </p>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Admin Support - PT. Telkom Indonesia</h4>
+
+                <span id="work-period"></span>
+
+              <p class="timeline-text">
+                As a Admin Support for the Business Service unit of PT. Telkom Indonesia Witel
+                South Kalimantan
+              </p>
+
+            </li>
+
 
           </ol>
 
@@ -1136,7 +1162,33 @@
   -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script>
+  // 🔹 Tentukan tanggal mulai kerja (format: YYYY-MM)
+  const startDate = new Date("2024-10"); // Oktober 2024
+
+  // 🔹 Tanggal akhir = sekarang
+  const endDate = new Date();
+
+  // 🔹 Hitung selisih dalam bulan
+  let months =
+    (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+    (endDate.getMonth() - startDate.getMonth()) + 1;
+
+  // 🔹 Buat format teks untuk tanggal
+  const monthNames = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
+  const startText = `${monthNames[startDate.getMonth()]} ${startDate.getFullYear()}`;
+  const endText = `${monthNames[endDate.getMonth()]} ${endDate.getFullYear()}`;
+
+  // 🔹 Tampilkan ke dalam elemen <span>
+  document.getElementById("work-period").textContent =
+    `${startText} — ${endText} (${months} months)`;
+</script>
 
 </body>
 
 </html>
+
