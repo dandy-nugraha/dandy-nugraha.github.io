@@ -86,7 +86,55 @@
     .nav{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
     .nav button{background:transparent; color:var(--muted); padding:8px 12px; border-radius:999px; font-weight:700; cursor:pointer; transition:all .25s var(--ease)}
     .nav button.active{background:linear-gradient(90deg, rgba(212,175,55,0.12), rgba(212,175,55,0.03)); color:var(--accent)}
-    #themeToggle{background:var(--glass); border-radius:10px; padding:6px 10px}
+
+    /* Language & Theme Toggle Container - Top Right Fixed */
+    .toggle-container{
+      position: absolute; 
+      top:20px; 
+      right:20px; 
+      display:flex; 
+      gap:8px; 
+      z-index:1000;
+      align-items:center;
+    }
+
+    #themeToggle, #langToggle{
+      background:var(--glass); 
+      border-radius:10px; 
+      padding:6px 10px; 
+      cursor:pointer; 
+      font-size:14px; 
+      transition:all .25s var(--ease);
+      color:var(--text);
+      font-weight:700;
+      border:1px solid rgba(255,255,255,0.1);
+    }
+    
+    #themeToggle:hover, #langToggle:hover{
+      background:rgba(255,255,255,0.08); 
+      transform:scale(1.05);
+      border:1px solid rgba(255,255,255,0.2);
+    }
+
+    @media(max-width:1024px){
+      .toggle-container{ top:16px; right:16px; gap:6px; }
+      #themeToggle, #langToggle{ padding:6px 10px; font-size:13px; }
+    }
+
+    @media(max-width:768px){
+      .toggle-container{ top:14px; right:14px; gap:6px; }
+      #themeToggle, #langToggle{ padding:5px 9px; font-size:13px; }
+    }
+
+    @media(max-width:480px){
+      .toggle-container{ top:12px; right:12px; gap:5px; }
+      #themeToggle, #langToggle{ padding:4px 8px; font-size:12px; border-radius:8px; }
+    }
+
+    @media(max-width:320px){
+      .toggle-container{ top:10px; right:10px; gap:4px; }
+      #themeToggle, #langToggle{ padding:4px 7px; font-size:11px; }
+    }
 
     .panelTitleWrap{display:flex; flex-direction:column}
     .section-title{font-size:28px; font-weight:800; color:var(--text); margin:6px 0}
@@ -160,6 +208,28 @@
       .sidebar{position:relative; top:0}
       .panel{min-height:unset}
     }
+
+    @media(max-width:768px){
+      .container{ margin:24px auto; padding:16px; gap:20px; }
+      .sidebar{ padding:18px; }
+      .panel{ padding:20px; }
+    }
+
+    @media(max-width:480px){
+      .container{ margin:16px auto; padding:12px; gap:16px; }
+      .sidebar{ padding:16px; }
+      .avatar img{ width:120px; height:150px; }
+      .name{ font-size:16px; }
+      .panel{ padding:16px; }
+      .section-title{ font-size:24px; }
+      .nav{ gap:6px; }
+      .nav button{ padding:6px 10px; font-size:13px; }
+    }
+
+    @media(max-width:320px){
+      .toggle-container{ top:10px; right:10px; gap:4px; }
+      #themeToggle, #langToggle{ padding:4px 7px; font-size:11px; }
+    }
   </style>
 </head>
 <body>
@@ -169,7 +239,6 @@
      
     <!-- SIDEBAR -->
     <aside class="sidebar reveal" id="sidebar">
-      <div class="nav-btn"><button id="themeToggle" title="Toggle theme">🌙</button></div>
       <div class="avatar"><img src="assets/images/profile.jpg" alt="Dandy Hendra Nugraha" onerror="this.style.opacity=.6"></div>
       <div class="name">Dandy Hendra Nugraha</div>
       <div class="title">Graphic Designer | Video Editor</div>
@@ -179,8 +248,6 @@
           <div class="contact-icon">✉️</div>
           <div class="contact-meta"><strong>Email</strong><div class="muted">dandyhendran@gmail.com</div></div>
         </div>
-
-      
 
         <div class="contact-item">
           <div class="contact-icon">📎</div>
@@ -199,6 +266,12 @@
         <a href="https://github.com/dandy-nugraha" target="_blank">GitHub</a>
       </div>
     </aside>
+
+    <!-- Language & Theme Toggle (Top Right Fixed) -->
+    <div class="toggle-container">
+      <button id="langToggle" title="Toggle language">EN</button>
+      <button id="themeToggle" title="Toggle theme">🌙</button>
+    </div>
 
     <!-- PANEL -->
     <main class="panel reveal" id="panel">
@@ -219,8 +292,8 @@
 
       <!-- ABOUT -->
       <section id="about" class="page reveal show" style="margin-top:14px">
-        <p style="text-align:justify;line-height:1.7;color:var(--muted)"></p>
-          I am a Digital Marketing Officer at PT. Telkom Indonesia, Tbk. with a passion for Graphic Design, Photography, and Videography. I have a deep interest in mastering tools like Photoshop, Illustrator, Canva, and Capcut. As a forever learner, I welcome any recommendations that challenge me and foster continuous growth.
+        <p style="margin-top:14px;text-align:justify;line-height:1.7;color:var(--muted)">
+          Saya adalah Petugas Digital Marketing di PT. Telkom Indonesia, Tbk. dengan passion dalam Desain Grafis, Fotografi, dan Videografi. Saya memiliki minat mendalam dalam menguasai tools seperti Photoshop, Illustrator, Canva, dan Capcut. Sebagai eternal learner, saya menerima semua rekomendasi yang menantang dan mendukung pertumbuhan berkelanjutan saya.
         </p>
 
         <p style="margin-top:14px;text-align:justify;line-height:1.7;color:var(--muted)">
@@ -574,6 +647,258 @@
       localStorage.setItem('dandy-theme', isLight ? 'light' : 'dark');
       themeToggle.textContent = isLight ? '☀️' : '🌙';
     });
+
+    // ====== LANGUAGE toggle ======
+    const langToggle = document.getElementById('langToggle');
+    const translations = {
+      'en': {
+        'nav-about': 'About',
+        'nav-resume': 'Resume',
+        'nav-portfolio': 'Portfolio',
+        'nav-contact': 'Contact',
+        'about-title': 'About',
+        'resume-title': 'Resume',
+        'portfolio-title': 'Portfolio',
+        'contact-title': 'Contact',
+        
+        // About section
+        'about-desc-1': 'I am a Digital Marketing Officer at PT. Telkom Indonesia, Tbk. with a passion for Graphic Design, Photography, and Videography. I have a deep interest in mastering tools like Photoshop, Illustrator, Canva, and Capcut. As a forever learner, I welcome any recommendations that challenge me and foster continuous growth.',
+        'about-desc-2': 'My expertise spans Graphic Design, Video Editing, Web Development, and Mobile App Development. I\'m committed to expanding my skills and embracing opportunities that push my growth mindset forward.',
+        'what-doing': 'What I\'m doing',
+        'clients': 'Clients',
+        
+        // Resume section
+        'education': 'Education',
+        'experience': 'Experience',
+        'edu-1-title': 'Universitas Islam Kalimantan Moch. Arsyad Al Banjari',
+        'edu-1-meta': '2019 — Present',
+        'edu-1-desc': 'Bachelor\'s degree Informatics',
+        'edu-2-title': 'SMAN - 1 Muara Teweh',
+        'edu-2-meta': '2016 — 2019',
+        'edu-2-desc': 'Science Major',
+        'exp-1-title': 'Graphic Design Intern',
+        'exp-1-meta': 'Oct 2022 — Dec 2022',
+        'exp-1-desc': 'As a graphic designer and content designer for the customer care unit of PT. Telkom Indonesia Witel South Kalimantan.',
+        'exp-2-title': 'Digital Marketing Operations — PT. Telkom Indonesia',
+        'exp-2-meta': 'Oct 2023 — Feb 2025',
+        'exp-2-desc': 'As a Digital Marketing Operations for the Business Service unit of PT. Telkom Indonesia Witel South Kalimantan.',
+        'exp-3-title': 'Admin Support — PT. Telkom Indonesia',
+        'exp-3-meta': 'Mar 2025 — Present',
+        'exp-3-desc': 'As an Admin Support for the Business Service unit of PT. Telkom Indonesia Witel South Kalimantan.',
+        'view-cv': '👁 View CV',
+        
+        // Portfolio section
+        'my-works': 'My Works',
+        'graphic-design': 'Graphic design & creative projects',
+        'all': 'All',
+        'graphic': 'Graphic Design',
+        'logo': 'Logo',
+        'instagram-title': 'Instagram',
+        'instagram-desc': 'Follow my latest updates and creative content',
+        'view-more-ig': '→ View More on Instagram',
+        
+        // Contact section
+        'contact-heading': 'Contact',
+        'contact-desc': 'Interested in working together? Send a message.',
+        'fullname': 'Full name',
+        'email': 'Email address',
+        'message': 'Your message',
+        'send-btn': 'Send Message'
+      },
+      'id': {
+        'nav-about': 'Tentang',
+        'nav-resume': 'Riwayat',
+        'nav-portfolio': 'Portofolio',
+        'nav-contact': 'Kontak',
+        'about-title': 'Tentang',
+        'resume-title': 'Riwayat',
+        'portfolio-title': 'Portofolio',
+        'contact-title': 'Kontak',
+        
+        // About section
+        'about-desc-1': 'Saya adalah Petugas Digital Marketing di PT. Telkom Indonesia, Tbk. dengan passion dalam Desain Grafis, Fotografi, dan Videografi. Saya memiliki minat mendalam dalam menguasai tools seperti Photoshop, Illustrator, Canva, dan Capcut. Sebagai eternal learner, saya menerima semua rekomendasi yang menantang dan mendukung pertumbuhan berkelanjutan saya.',
+        'about-desc-2': 'Keahlian saya mencakup Desain Grafis, Video Editing, Web Development, dan Mobile App Development. Saya berkomitmen untuk memperluas keterampilan dan merangkul peluang yang mendorong pertumbuhan mindset saya.',
+        'what-doing': 'Yang sedang saya kerjakan',
+        'clients': 'Klien',
+        
+        // Resume section
+        'education': 'Pendidikan',
+        'experience': 'Pengalaman',
+        'edu-1-title': 'Universitas Islam Kalimantan Moch. Arsyad Al Banjari',
+        'edu-1-meta': '2019 — Sekarang',
+        'edu-1-desc': 'Gelar Sarjana Informatika',
+        'edu-2-title': 'SMAN - 1 Muara Teweh',
+        'edu-2-meta': '2016 — 2019',
+        'edu-2-desc': 'Jurusan IPA',
+        'exp-1-title': 'Internship Desain Grafis',
+        'exp-1-meta': 'Okt 2022 — Des 2022',
+        'exp-1-desc': 'Sebagai desainer grafis dan content designer untuk unit customer care PT. Telkom Indonesia Witel Kalimantan Selatan.',
+        'exp-2-title': 'Digital Marketing Operations — PT. Telkom Indonesia',
+        'exp-2-meta': 'Okt 2023 — Feb 2025',
+        'exp-2-desc': 'Sebagai Digital Marketing Operations untuk unit Business Service PT. Telkom Indonesia Witel Kalimantan Selatan.',
+        'exp-3-title': 'Admin Support — PT. Telkom Indonesia',
+        'exp-3-meta': 'Mar 2025 — Sekarang',
+        'exp-3-desc': 'Sebagai Admin Support untuk unit Business Service PT. Telkom Indonesia Witel Kalimantan Selatan.',
+        'view-cv': '👁 Lihat CV',
+        
+        // Portfolio section
+        'my-works': 'Karya Saya',
+        'graphic-design': 'Desain grafis & proyek kreatif',
+        'all': 'Semua',
+        'graphic': 'Desain Grafis',
+        'logo': 'Logo',
+        'instagram-title': 'Instagram',
+        'instagram-desc': 'Ikuti pembaruan dan konten kreatif terbaru saya',
+        'view-more-ig': '→ Lihat Lebih Banyak di Instagram',
+        
+        // Contact section
+        'contact-heading': 'Kontak',
+        'contact-desc': 'Tertarik untuk berkolaborasi? Kirimkan pesan.',
+        'fullname': 'Nama lengkap',
+        'email': 'Alamat email',
+        'message': 'Pesan Anda',
+        'send-btn': 'Kirim Pesan'
+      }
+    };
+
+    let currentLang = localStorage.getItem('dandy-lang') || 'en';
+    langToggle.textContent = currentLang.toUpperCase();
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('dandy-lang', lang);
+      langToggle.textContent = lang.toUpperCase();
+
+      // Update navigation buttons
+      document.querySelectorAll('.nav-btn[data-target]').forEach(btn => {
+        const target = btn.dataset.target;
+        btn.textContent = translations[lang][`nav-${target}`];
+      });
+
+      // Update panel title
+      const activeTarget = document.querySelector('.nav-btn[data-target].active')?.dataset.target || 'about';
+      document.getElementById('panelTitle').textContent = translations[lang][`${activeTarget}-title`];
+
+      // Update About section
+      const aboutSection = document.getElementById('about');
+      if(aboutSection) {
+        const paragraphs = aboutSection.querySelectorAll('p[style*="text-align"]');
+        if(paragraphs[0]) paragraphs[0].textContent = translations[lang]['about-desc-1'];
+        if(paragraphs[1]) paragraphs[1].textContent = translations[lang]['about-desc-2'];
+        
+        const h3s = aboutSection.querySelectorAll('h3');
+        h3s.forEach(h3 => {
+          if(h3.textContent.includes('What')) h3.textContent = translations[lang]['what-doing'];
+          if(h3.textContent.includes('Clients')) h3.textContent = translations[lang]['clients'];
+        });
+      }
+
+      // Update Resume section
+      const resumeSection = document.getElementById('resume');
+      if(resumeSection) {
+        const h3s = resumeSection.querySelectorAll('h3');
+        h3s.forEach(h3 => {
+          if(h3.textContent.includes('Education')) h3.textContent = translations[lang]['education'];
+          if(h3.textContent.includes('Experience')) h3.textContent = translations[lang]['experience'];
+        });
+        
+        // Update education items
+        const tlItems = resumeSection.querySelectorAll('.tl-item');
+        if(tlItems[0]) {
+          const h4 = tlItems[0].querySelector('h4');
+          const meta = tlItems[0].querySelector('.meta');
+          const desc = tlItems[0].querySelector('.desc');
+          if(h4) h4.textContent = translations[lang]['edu-1-title'];
+          if(meta) meta.textContent = translations[lang]['edu-1-meta'];
+          if(desc) desc.textContent = translations[lang]['edu-1-desc'];
+        }
+        if(tlItems[1]) {
+          const h4 = tlItems[1].querySelector('h4');
+          const meta = tlItems[1].querySelector('.meta');
+          const desc = tlItems[1].querySelector('.desc');
+          if(h4) h4.textContent = translations[lang]['edu-2-title'];
+          if(meta) meta.textContent = translations[lang]['edu-2-meta'];
+          if(desc) desc.textContent = translations[lang]['edu-2-desc'];
+        }
+        
+        // Update experience items (start from index 2)
+        if(tlItems[2]) {
+          const h4 = tlItems[2].querySelector('h4');
+          const meta = tlItems[2].querySelector('.meta');
+          const desc = tlItems[2].querySelector('.desc');
+          if(h4) h4.textContent = translations[lang]['exp-1-title'];
+          if(meta) meta.textContent = translations[lang]['exp-1-meta'];
+          if(desc) desc.textContent = translations[lang]['exp-1-desc'];
+        }
+        if(tlItems[3]) {
+          const h4 = tlItems[3].querySelector('h4');
+          const meta = tlItems[3].querySelector('.meta');
+          const desc = tlItems[3].querySelector('.desc');
+          if(h4) h4.textContent = translations[lang]['exp-2-title'];
+          if(meta) meta.textContent = translations[lang]['exp-2-meta'];
+          if(desc) desc.textContent = translations[lang]['exp-2-desc'];
+        }
+        if(tlItems[4]) {
+          const h4 = tlItems[4].querySelector('h4');
+          const meta = tlItems[4].querySelector('.meta');
+          const desc = tlItems[4].querySelector('.desc');
+          if(h4) h4.textContent = translations[lang]['exp-3-title'];
+          if(meta) meta.textContent = translations[lang]['exp-3-meta'];
+          if(desc) desc.textContent = translations[lang]['exp-3-desc'];
+        }
+        
+        const viewCvBtn = resumeSection.querySelector('#openCvPreview');
+        if(viewCvBtn) viewCvBtn.textContent = translations[lang]['view-cv'];
+      }
+
+      // Update Portfolio section
+      const portfolioSection = document.getElementById('portfolio');
+      if(portfolioSection) {
+        const allH3 = portfolioSection.querySelectorAll('h3');
+        if(allH3[0]) allH3[0].textContent = translations[lang]['my-works'];
+        if(allH3[1]) allH3[1].textContent = translations[lang]['instagram-title'];
+        
+        const allP = portfolioSection.querySelectorAll('p');
+        if(allP[0]) allP[0].textContent = translations[lang]['graphic-design'];
+        if(allP[1]) allP[1].textContent = translations[lang]['instagram-desc'];
+        
+        const filterBtns = portfolioSection.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+          const filter = btn.dataset.filter;
+          if(filter === 'all') btn.textContent = translations[lang]['all'];
+          if(filter === 'graphic') btn.textContent = translations[lang]['graphic'];
+          if(filter === 'logo') btn.textContent = translations[lang]['logo'];
+        });
+
+        const igBtn = portfolioSection.querySelector('a[href*="instagram"]');
+        if(igBtn) igBtn.textContent = translations[lang]['view-more-ig'];
+      }
+
+      // Update Contact section
+      const contactSection = document.getElementById('contact');
+      if(contactSection) {
+        const h3 = contactSection.querySelector('h3');
+        if(h3) h3.textContent = translations[lang]['contact-heading'];
+        const p = contactSection.querySelector('p');
+        if(p) p.textContent = translations[lang]['contact-desc'];
+        
+        const inputs = contactSection.querySelectorAll('.input');
+        if(inputs[0]) inputs[0].placeholder = translations[lang]['fullname'];
+        if(inputs[1]) inputs[1].placeholder = translations[lang]['email'];
+        if(inputs[2]) inputs[2].placeholder = translations[lang]['message'];
+        
+        const submitBtn = contactSection.querySelector('.btn-primary');
+        if(submitBtn) submitBtn.textContent = translations[lang]['send-btn'];
+      }
+    }
+
+    langToggle.addEventListener('click', () => {
+      const newLang = currentLang === 'en' ? 'id' : 'en';
+      setLanguage(newLang);
+    });
+
+    // Initialize language on load
+    setLanguage(currentLang);
 
     // ====== Portfolio data (use filenames you have in project/ folder) ======
     const projects = [
